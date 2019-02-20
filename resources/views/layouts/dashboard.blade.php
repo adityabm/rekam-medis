@@ -78,6 +78,7 @@
               </div>
             </div>
           </li>
+          @if(Auth::user()->role == 'admin')
           <li class="nav-item">
             <a class="nav-link" href="{{url('dashboard')}}">
               <i class="menu-icon mdi mdi-television"></i>
@@ -96,6 +97,14 @@
               <span class="menu-title">Data Pasien</span>
             </a>
           </li>
+          @else
+          <li class="nav-item">
+            <a class="nav-link" href="{{url('jenjang')}}">
+              <i class="menu-icon fa fa-university"></i>
+              <span class="menu-title">Jenjang Pendidikan</span>
+            </a>
+          </li>
+          @endif
         </ul>
       </nav>
       <!-- partial -->

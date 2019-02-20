@@ -2195,14 +2195,24 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['item'],
+  props: ['item', 'jenjang'],
   data: function data() {
     return {
       pasien: {
         id: null,
         jenis_kelamin: '',
-        gol_darah: ''
+        gol_darah: '',
+        jenjang_id: ''
       },
       riwayat: [],
       base_url: base_url,
@@ -2238,6 +2248,7 @@ __webpack_require__.r(__webpack_exports__);
         kontak: that.pasien.kontak,
         jenis_kelamin: that.pasien.jenis_kelamin,
         gol_darah: that.pasien.gol_darah,
+        jenjang_id: that.pasien.jenjang_id,
         riwayat: that.riwayat
       }).then(function (response) {
         var res = response.data;
@@ -2441,12 +2452,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['jenjang'],
   data: function data() {
     return {
       pasien: {
         id: null,
         jenis_kelamin: '',
+        jenjang_id: '',
         gol_darah: ''
       },
       riwayat: [],
@@ -2482,6 +2504,7 @@ __webpack_require__.r(__webpack_exports__);
         kontak: that.pasien.kontak,
         jenis_kelamin: that.pasien.jenis_kelamin,
         gol_darah: that.pasien.gol_darah,
+        jenjang_id: that.pasien.jenjang_id,
         riwayat: that.riwayat
       }).then(function (response) {
         var res = response.data;
@@ -2634,6 +2657,148 @@ __webpack_require__.r(__webpack_exports__);
     this.$nextTick(function () {
       eventHub.$on('open-modal', this.open);
     }.bind(this));
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/modal/FormJenjang.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/modal/FormJenjang.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: [],
+  data: function data() {
+    return {
+      item: {},
+      base_url: base_url
+    };
+  },
+  methods: {
+    open: function open(oid, item) {
+      if (oid == 'form-jenjang') {
+        this.item = item;
+        $('#modal-form-jenjang').modal("show");
+      }
+    },
+    save: function save() {
+      var that = this;
+      axios.post(that.base_url + '/tambah-jenjang', {
+        _token: that.$root.csrf_token,
+        id: that.item.id,
+        name: that.item.name
+      }).then(function (response) {
+        var res = response.data;
+
+        if (res.success) {
+          that.$swal("Berhasil!", "Berhasil menyimpan data jenjang", "success");
+          eventHub.$emit('refresh-ajaxtable', 'data-jenjang');
+          $('#modal-form-jenjang').modal("hide");
+        } else {
+          that.$swal("Gagal!", res.message, "error");
+        }
+      });
+    }
+  },
+  mounted: function mounted() {
+    this.$nextTick(function () {
+      eventHub.$on('open-modal', this.open);
+    }.bind(this));
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/table-row/DataJenjang.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/table-row/DataJenjang.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['item', 'pagination', 'rowparams', 'index'],
+  data: function data() {
+    return {
+      base_url: base_url
+    };
+  },
+  methods: {
+    hapus: function hapus(item) {
+      var that = this;
+      this.$swal("Apakah Anda Yakin Akan Menghapus Data Ini?", {
+        buttons: {
+          cancel: "Batal",
+          ya: true
+        }
+      }).then(function (value) {
+        switch (value) {
+          case "ya":
+            axios.post(that.base_url + '/hapus-jenjang', {
+              _token: that.$root.csrf_token,
+              id: item
+            }).then(function (response) {
+              var res = response.data;
+
+              if (res.success) {
+                that.$swal("Berhasil!", "Berhasil menghapus Data Jenjang", "success");
+                eventHub.$emit('refresh-ajaxtable', 'data-jenjang');
+              } else {
+                that.$swal("Gagal!", res.message, "error");
+              }
+            });
+            break;
+        }
+      });
+    },
+    edit: function edit(item) {
+      eventHub.$emit('open-modal', 'form-jenjang', item);
+    }
   }
 });
 
@@ -26633,6 +26798,62 @@ var render = function() {
                       ])
                     ]),
                     _vm._v(" "),
+                    _c("div", { staticClass: "form-group row" }, [
+                      _c("label", { staticClass: "col-sm-2 col-form-label" }, [
+                        _vm._v("Jenjang Pendidikan")
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-sm-10" }, [
+                        _c(
+                          "select",
+                          {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.pasien.jenjang_id,
+                                expression: "pasien.jenjang_id"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            on: {
+                              change: function($event) {
+                                var $$selectedVal = Array.prototype.filter
+                                  .call($event.target.options, function(o) {
+                                    return o.selected
+                                  })
+                                  .map(function(o) {
+                                    var val = "_value" in o ? o._value : o.value
+                                    return val
+                                  })
+                                _vm.$set(
+                                  _vm.pasien,
+                                  "jenjang_id",
+                                  $event.target.multiple
+                                    ? $$selectedVal
+                                    : $$selectedVal[0]
+                                )
+                              }
+                            }
+                          },
+                          [
+                            _c("option", { attrs: { value: "" } }, [
+                              _vm._v("Pilih Jenjang")
+                            ]),
+                            _vm._v(" "),
+                            _vm._l(_vm.jenjang, function(jen) {
+                              return _c(
+                                "option",
+                                { domProps: { value: jen.id } },
+                                [_vm._v(_vm._s(jen.name))]
+                              )
+                            })
+                          ],
+                          2
+                        )
+                      ])
+                    ]),
+                    _vm._v(" "),
                     _c(
                       "button",
                       {
@@ -27283,6 +27504,62 @@ var render = function() {
                       ])
                     ]),
                     _vm._v(" "),
+                    _c("div", { staticClass: "form-group row" }, [
+                      _c("label", { staticClass: "col-sm-2 col-form-label" }, [
+                        _vm._v("Jenjang Pendidikan")
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-sm-10" }, [
+                        _c(
+                          "select",
+                          {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.pasien.jenjang_id,
+                                expression: "pasien.jenjang_id"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            on: {
+                              change: function($event) {
+                                var $$selectedVal = Array.prototype.filter
+                                  .call($event.target.options, function(o) {
+                                    return o.selected
+                                  })
+                                  .map(function(o) {
+                                    var val = "_value" in o ? o._value : o.value
+                                    return val
+                                  })
+                                _vm.$set(
+                                  _vm.pasien,
+                                  "jenjang_id",
+                                  $event.target.multiple
+                                    ? $$selectedVal
+                                    : $$selectedVal[0]
+                                )
+                              }
+                            }
+                          },
+                          [
+                            _c("option", { attrs: { value: "" } }, [
+                              _vm._v("Pilih Jenjang")
+                            ]),
+                            _vm._v(" "),
+                            _vm._l(_vm.jenjang, function(jen) {
+                              return _c(
+                                "option",
+                                { domProps: { value: jen.id } },
+                                [_vm._v(_vm._s(jen.name))]
+                              )
+                            })
+                          ],
+                          2
+                        )
+                      ])
+                    ]),
+                    _vm._v(" "),
                     _c(
                       "button",
                       {
@@ -27783,6 +28060,199 @@ var staticRenderFns = [
     ])
   }
 ]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/modal/FormJenjang.vue?vue&type=template&id=464f7962&":
+/*!*********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/modal/FormJenjang.vue?vue&type=template&id=464f7962& ***!
+  \*********************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticClass: "modal fade",
+      attrs: {
+        role: "dialog",
+        id: "modal-form-jenjang",
+        tabindex: "-1",
+        "aria-hidden": "true"
+      }
+    },
+    [
+      _c("div", { staticClass: "modal-dialog", attrs: { role: "document" } }, [
+        _c(
+          "div",
+          {
+            staticClass: "modal-content",
+            staticStyle: { background: "white" }
+          },
+          [
+            _vm._m(0),
+            _vm._v(" "),
+            _c("div", { staticClass: "modal-body" }, [
+              _c("form", { staticClass: "forms-sample" }, [
+                _c("div", { staticClass: "form-group row" }, [
+                  _c("label", { staticClass: "col-sm-4 col-form-label" }, [
+                    _vm._v("Nama Jenjang")
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-md-8" }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.item.name,
+                          expression: "item.name"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      staticStyle: { border: "1px solid #cecece" },
+                      attrs: { type: "text" },
+                      domProps: { value: _vm.item.name },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.item, "name", $event.target.value)
+                        }
+                      }
+                    })
+                  ])
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "modal-footer" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-secondary",
+                  attrs: { type: "button", "data-dismiss": "modal" }
+                },
+                [_vm._v("Keluar")]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-success",
+                  attrs: { type: "button" },
+                  on: {
+                    click: function($event) {
+                      return _vm.save()
+                    }
+                  }
+                },
+                [_vm._v("Simpan")]
+              )
+            ])
+          ]
+        )
+      ])
+    ]
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c("h4", { staticClass: "modal-title" }, [_vm._v("Form Jenjang")]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/table-row/DataJenjang.vue?vue&type=template&id=4dde7457&":
+/*!*************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/table-row/DataJenjang.vue?vue&type=template&id=4dde7457& ***!
+  \*************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("tr", [
+    _c("td", {
+      domProps: {
+        textContent: _vm._s(
+          (_vm.pagination.page - 1) * _vm.pagination.perpage + 1 + _vm.index
+        )
+      }
+    }),
+    _vm._v(" "),
+    _c("td", [_vm._v(_vm._s(_vm.item.name))]),
+    _vm._v(" "),
+    _c("td", [
+      _c(
+        "a",
+        {
+          attrs: { href: "#" },
+          on: {
+            click: function($event) {
+              return _vm.edit(_vm.item)
+            }
+          }
+        },
+        [_c("span", { staticClass: "fa fa-edit" })]
+      ),
+      _vm._v(" | \n    "),
+      _c(
+        "a",
+        {
+          attrs: { href: "#" },
+          on: {
+            click: function($event) {
+              return _vm.hapus(_vm.item.id)
+            }
+          }
+        },
+        [_c("span", { staticClass: "fa fa-trash" })]
+      )
+    ])
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -41624,7 +42094,9 @@ Vue.component('form-pasien-edit', __webpack_require__(/*! ./components/EditPasie
 Vue.component('ajax-table', __webpack_require__(/*! ./components/AjaxTable.vue */ "./resources/js/components/AjaxTable.vue").default);
 Vue.component('sorter', __webpack_require__(/*! ./components/Sorter.vue */ "./resources/js/components/Sorter.vue").default);
 Vue.component('tr-data-pasien', __webpack_require__(/*! ./table-row/DataPasien.vue */ "./resources/js/table-row/DataPasien.vue").default);
+Vue.component('tr-data-jenjang', __webpack_require__(/*! ./table-row/DataJenjang.vue */ "./resources/js/table-row/DataJenjang.vue").default);
 Vue.component('modal-detail-pasien', __webpack_require__(/*! ./modal/DetailPasien.vue */ "./resources/js/modal/DetailPasien.vue").default);
+Vue.component('modal-form-jenjang', __webpack_require__(/*! ./modal/FormJenjang.vue */ "./resources/js/modal/FormJenjang.vue").default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -42168,6 +42640,144 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DetailPasien_vue_vue_type_template_id_7d23c461___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DetailPasien_vue_vue_type_template_id_7d23c461___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/modal/FormJenjang.vue":
+/*!********************************************!*\
+  !*** ./resources/js/modal/FormJenjang.vue ***!
+  \********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _FormJenjang_vue_vue_type_template_id_464f7962___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./FormJenjang.vue?vue&type=template&id=464f7962& */ "./resources/js/modal/FormJenjang.vue?vue&type=template&id=464f7962&");
+/* harmony import */ var _FormJenjang_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./FormJenjang.vue?vue&type=script&lang=js& */ "./resources/js/modal/FormJenjang.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _FormJenjang_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _FormJenjang_vue_vue_type_template_id_464f7962___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _FormJenjang_vue_vue_type_template_id_464f7962___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/modal/FormJenjang.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/modal/FormJenjang.vue?vue&type=script&lang=js&":
+/*!*********************************************************************!*\
+  !*** ./resources/js/modal/FormJenjang.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_FormJenjang_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./FormJenjang.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/modal/FormJenjang.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_FormJenjang_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/modal/FormJenjang.vue?vue&type=template&id=464f7962&":
+/*!***************************************************************************!*\
+  !*** ./resources/js/modal/FormJenjang.vue?vue&type=template&id=464f7962& ***!
+  \***************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FormJenjang_vue_vue_type_template_id_464f7962___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./FormJenjang.vue?vue&type=template&id=464f7962& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/modal/FormJenjang.vue?vue&type=template&id=464f7962&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FormJenjang_vue_vue_type_template_id_464f7962___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FormJenjang_vue_vue_type_template_id_464f7962___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/table-row/DataJenjang.vue":
+/*!************************************************!*\
+  !*** ./resources/js/table-row/DataJenjang.vue ***!
+  \************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _DataJenjang_vue_vue_type_template_id_4dde7457___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./DataJenjang.vue?vue&type=template&id=4dde7457& */ "./resources/js/table-row/DataJenjang.vue?vue&type=template&id=4dde7457&");
+/* harmony import */ var _DataJenjang_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./DataJenjang.vue?vue&type=script&lang=js& */ "./resources/js/table-row/DataJenjang.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _DataJenjang_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _DataJenjang_vue_vue_type_template_id_4dde7457___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _DataJenjang_vue_vue_type_template_id_4dde7457___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/table-row/DataJenjang.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/table-row/DataJenjang.vue?vue&type=script&lang=js&":
+/*!*************************************************************************!*\
+  !*** ./resources/js/table-row/DataJenjang.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_DataJenjang_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./DataJenjang.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/table-row/DataJenjang.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_DataJenjang_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/table-row/DataJenjang.vue?vue&type=template&id=4dde7457&":
+/*!*******************************************************************************!*\
+  !*** ./resources/js/table-row/DataJenjang.vue?vue&type=template&id=4dde7457& ***!
+  \*******************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DataJenjang_vue_vue_type_template_id_4dde7457___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./DataJenjang.vue?vue&type=template&id=4dde7457& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/table-row/DataJenjang.vue?vue&type=template&id=4dde7457&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DataJenjang_vue_vue_type_template_id_4dde7457___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DataJenjang_vue_vue_type_template_id_4dde7457___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

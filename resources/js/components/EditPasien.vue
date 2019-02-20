@@ -63,6 +63,15 @@
                     </select>
                   </div>
                 </div>
+                <div class="form-group row">
+                  <label class="col-sm-2 col-form-label">Jenjang Pendidikan</label>
+                  <div class="col-sm-10">
+                    <select class="form-control" v-model="pasien.jenjang_id">
+                      <option value="">Pilih Jenjang</option>
+                      <option v-for="jen in jenjang" :value="jen.id">{{jen.name}}</option>
+                    </select>
+                  </div>
+                </div>
                 <button type="button" class="btn btn-primary mr-2 mb-3" @click="tambahRiwayat()">Tambah Riwayat Pasien</button>
                 <template v-for="(riw,index) in riwayat">
                   <fieldset>
@@ -115,13 +124,14 @@
 
 <script>
     export default {
-        props: ['item'],
+        props: ['item','jenjang'],
         data() {
           return {
             pasien:{
               id:null,
               jenis_kelamin:'',
-              gol_darah:''
+              gol_darah:'',
+              jenjang_id:''
             },
             riwayat:[],
             base_url: base_url,
@@ -157,6 +167,7 @@
                 kontak:that.pasien.kontak,
                 jenis_kelamin:that.pasien.jenis_kelamin,
                 gol_darah:that.pasien.gol_darah,
+                jenjang_id:that.pasien.jenjang_id,
                 riwayat:that.riwayat
               }).then(response => {
                 var res = response.data;

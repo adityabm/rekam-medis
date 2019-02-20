@@ -15,4 +15,9 @@ class Pasien extends Model
     {
     	return $this->hasMany('App\Models\PasienRiwayat','pasien_id');
     }
+
+    public function jenjang()
+    {
+    	return $this->hasOne('App\Models\Jenjang','id','jenjang_id');
+    }
 }

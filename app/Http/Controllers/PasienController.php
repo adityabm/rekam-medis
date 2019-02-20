@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Models\Pasien;
 use App\Models\PasienRiwayat;
+use App\Models\Jenjang;
 
 use Auth;
 use DB;
@@ -19,13 +20,17 @@ class PasienController extends Controller
 
     public function tambah()
     {
-    	return view('pages.tambah');
+    	$jenjang = Jenjang::get();
+
+    	return view('pages.tambah',compact('jenjang'));
     }
 
     public function edit($id)
     {
     	$pasien = Pasien::with(['riwayat'])->find($id);
-    	return view('pages.edit',compact('pasien'));
+    	$jenjang = Jenjang::get();
+
+    	return view('pages.edit',compact('pasien','jenjang'));
     }
 
     public function proses(Request $request)
@@ -50,6 +55,7 @@ class PasienController extends Controller
     	$pasien->kontak = $request->kontak;
     	$pasien->jenis_kelamin = $request->jenis_kelamin;
     	$pasien->gol_darah = $request->gol_darah;
+    	$pasien->jenjang_id = $request->jenjang_id;
     	$pasien->save();
 
     	$riwayat = $request->get('riwayat',[]);
@@ -150,4 +156,91 @@ class PasienController extends Controller
     	$riwayat->delete();
     	return response()->json(['success' => true,'Berhasil']);
     }
+
+    public function jenjang()
+    {
+    	return view('pages.jenjang');
+    }
+
+    public function getDataJenjang(Request $request)
+    {
+	    $models = Jenjang::query();
+        $params = $request->get('params', false);
+        $order  = $request->get('order', false);
+
+        if ($params) {
+            foreach ($params as $key => $val) {
+                if ($val == '') continue;
+                switch ($key) {
+                    default:
+                        $models = $models->where($key, $val);
+                        break;
+                }
+            }
+        }
+
+        $count = $models->count();
+
+        $search = $request->get('search',false);
+        if($search){
+        	$models = $models->where(function($q) use ($search){
+        		$q->where('name','like',"%$search%");
+        	});
+        }
+
+        if ($order) {
+            $order_direction = $request->get('order_direction', 'asc');
+            if (empty($order_direction)) $order_direction = 'asc';
+
+            switch ($order) {
+                default:
+                    $models = $models->orderBy($order, $order_direction);
+                    break;
+            }
+        }
+
+        $page    = $request->get('page', 1);
+        $perpage = $request->get('perpage', 20);
+
+        $models = $models->skip(($page - 1) * $perpage)->take($perpage)->get();
+        foreach ($models as &$model) {
+        }
+
+        $result = [
+            'data'  => $models,
+            'count' => $count
+        ];
+
+        return response()->json($result);
+    }
+
+    public function hapusJenjang(Request $request)
+    {
+    	$id = $request->id;
+    	$jenjang = Jenjang::find($id);
+    	if(!$jenjang){
+    		return response()->json(['success' => false,'message' => 'Data Tidak Ditemukan']);
+    	}
+
+    	$jenjang->delete();
+    	return response()->json(['success' => true,'Berhasil']);
+    }
+
+    public function tambahJenjang(Request $request)
+    {
+    	$id = $request->get('id',false);
+
+    	if($id){
+	    	$jenjang = Jenjang::find($id);
+    	}else{
+    		$jenjang = new Jenjang;
+    	}
+
+    	$jenjang->name = $request->name;
+    	$jenjang->save();
+
+    	return response()->json(['success' => true,'Berhasil']);
+    }
+
+
 }

@@ -1,5 +1,5 @@
 @extends('layouts.dashboard')
 
 @section('content')
-<form-pasien></form-pasien>
+<form-pasien :jenjang="{{$jenjang}}"></form-pasien>
 @endsection

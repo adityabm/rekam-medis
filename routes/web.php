@@ -25,3 +25,7 @@ Route::get('/get-data-pasien', 'PasienController@getData')->name('get-data-pasie
 Route::post('/proses-pasien', 'PasienController@proses')->name('proses-pasien');
 Route::post('/hapus-pasien', 'PasienController@hapus')->name('hapus-pasien');
 Route::post('/hapus-riwayat', 'PasienController@hapusRiwayat')->name('hapus-riwayat');
+Route::get('/jenjang', 'PasienController@jenjang')->name('jenjang');
+Route::get('/get-data-jenjang', 'PasienController@getDataJenjang')->name('get-data-jenjang');
+Route::post('/tambah-jenjang', 'PasienController@tambahJenjang')->name('tambah-jenjang');
+Route::post('/hapus-jenjang', 'PasienController@hapusJenjang')->name('hapus-jenjang');

@@ -32,8 +32,10 @@ Vue.component('ajax-table', require('./components/AjaxTable.vue').default);
 Vue.component('sorter', require('./components/Sorter.vue').default);
 
 Vue.component('tr-data-pasien', require('./table-row/DataPasien.vue').default);
+Vue.component('tr-data-jenjang', require('./table-row/DataJenjang.vue').default);
 
 Vue.component('modal-detail-pasien', require('./modal/DetailPasien.vue').default);
+Vue.component('modal-form-jenjang', require('./modal/FormJenjang.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
